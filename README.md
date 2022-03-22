@@ -1,4 +1,6 @@
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=pieszynski_oncube&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=pieszynski_oncube)
+
 ## Build 
 
 ```bash
