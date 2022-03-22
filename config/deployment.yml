@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oncube
+  labels:
+    app: oncube
+spec:
+  replicas: 2
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: oncube
+  template:
+    metadata:
+      labels:
+        app: oncube
+    spec:
+      containers:
+      - name: oncube
+        image: docker.io/pieszynski/oncube:0.0.1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        env:
+        - name: WOOT
+          value: "nice hello"
