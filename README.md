@@ -22,6 +22,11 @@ kubectl logs -l app=oncube -f --timestamps --prefix
 
 kubectl edit deployment/oncube
 
+kubectl set image deployment/oncube oncube=docker.io/pieszynski/oncube:0.0.2 
+kubectl rollout status deployment oncube
+kubectl rollout history deployment oncube
+kubectl rollout undo deployment oncube
+
 kubectl delete services -l app=oncube
 kubectl delete deployments -l app=oncube
 ```

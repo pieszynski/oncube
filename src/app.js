@@ -13,7 +13,7 @@ const www = http.createServer((req, res) => {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
   const envs = JSON.stringify(process.env);
-  console.log(`app v.${version} New request from ${req.socket.remoteAddress} at ${new Date().toISOString()}: ${req.method} ${req.url}`);
+  console.log(`app v.${version} New request from ${req.socket.remoteAddress} at ${new Date().toISOString()}: ${req.headers.host} ${req.method} ${req.url}`);
   res.end(`
 Hello from ${req.socket.remoteAddress}\n
 Welcome to ${process.env.HOSTNAME} v.${version}\n
