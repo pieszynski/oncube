@@ -1,0 +1,26 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: ing
+resources:
+- res/ns.yml
+- res/depl.yml
+- res/svc.yml
+- res/ingr.yml
+commonLabels:
+  res: play
+  app: oncube-app
+configMapGenerator:
+- name: app-data
+  files:
+  - files/data.env
+- name: app-env
+  literals:
+  - NENV=TEST
+replicas:
+- name: oncube
+  count: 1
+images:
+- name: docker.io/nginx
+  newTag: 1.21.6
+- name: docker.io/nginx/unit
+  newTag: 1.26.1-node16

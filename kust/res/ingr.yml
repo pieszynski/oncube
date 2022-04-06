@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /rewrite/$2
+    nginx.ingress.kubernetes.io/use-regex: "true"
+  name: oncube
+  namespace: default
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      - path: /s(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: oncube
+            port: 
+              number: 90
+    # host: rewrite.bar.com

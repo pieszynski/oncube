@@ -31,8 +31,6 @@ kubectl get all
 
 kubectl apply -f config/ns.yml
 kubectl apply -f config/deployment.yml
-kubectl apply -f config/balancer.yml
-kubectl apply -f config/ing.yml
 
 kubectl logs -l app=oncube -f --timestamps --prefix
 
