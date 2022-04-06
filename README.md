@@ -21,7 +21,8 @@ kubectl apply -k ingress-ctl/
 
 kubectl kustomize ./kust
 
-kubectl apply -k ./kust
+kubectl apply -k kust/
+kubectl apply -k live/
 ```
 
 ### kubectl

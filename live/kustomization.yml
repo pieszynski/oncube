@@ -1,0 +1,36 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: live
+commonLabels:
+  res: live
+bases:
+- ../kust
+patchesJson6902:
+- target:
+    version: v1
+    kind: ConfigMap
+    name: app-env
+  patch: |-
+    - op: replace
+      path: /data/NENV
+      value: LIVE
+- target:
+    version: v1
+    kind: Ingress
+    name: oncube
+  patch: |-
+    - op: add
+      path: /spec/rules/0/host
+      value: aks.piesz.pl
+    - op: replace
+      path: /metadata/annotations/nginx.ingress.kubernetes.io~1rewrite-target
+      value: /hello/$1
+    - op: replace
+      path: /spec/rules/0/http/paths/0/path
+      value: /(.*)
+replicas:
+- name: oncube
+  count: 2
+images:
+- name: docker.io/pieszynski/oncube
+  newTag: 0.0.1
