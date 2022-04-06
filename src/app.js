@@ -17,6 +17,7 @@ const www = http.createServer((req, res) => {
   res.end(`
 Hello from ${req.socket.remoteAddress}\n
 Welcome to ${process.env.HOSTNAME} v.${version}\n
+Path ${req.method} ${req.url}\n
 Now: ${new Date().toISOString()}\n
 ENVs: ${envs}\n
 `);

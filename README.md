@@ -12,11 +12,27 @@ docker buildx build --platform linux/arm64,linux/amd64 -t pieszynski/oncube:late
 
 ## k8s
 
+* Do zarządzania graficznie: https://k8slens.dev/index.html
+
+### kustomize
+
+```bash
+kubectl apply -k ingress-ctl/
+
+kubectl kustomize ./kust
+
+kubectl apply -k ./kust
+```
+
+### kubectl
+
 ```bash
 kubectl get all
 
+kubectl apply -f config/ns.yml
 kubectl apply -f config/deployment.yml
 kubectl apply -f config/balancer.yml
+kubectl apply -f config/ing.yml
 
 kubectl logs -l app=oncube -f --timestamps --prefix
 
@@ -29,4 +45,16 @@ kubectl rollout undo deployment oncube
 
 kubectl delete services -l app=oncube
 kubectl delete deployments -l app=oncube
+```
+
+### REST API
+
+```bash
+kubectl proxy
+curl http://localhost:8001/version
+export POD_NAME=$(kubectl get pods -o go-template --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}')
+curl http://localhost:8001/api/v1/namespaces/test/pods/nginx-deployment-7c6796f5c-w6qp8/
+
+curl http://localhost:8001/api/v1/namespaces/test/pods/nginx-deployment-7c6796f5c-w6qp8/proxy/
+
 ```

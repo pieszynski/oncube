@@ -1,0 +1,4 @@
+- op: add
+  path: /metadata/annotations
+  value: 
+    service.beta.kubernetes.io/azure-dns-label-name: dks3
