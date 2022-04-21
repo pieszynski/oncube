@@ -3,12 +3,19 @@ kind: Kustomization
 namespace: ing
 resources:
 - res/ns.yml
+- res/store.yml
 - res/depl.yml
 - res/svc.yml
 - res/ingr.yml
-commonLabels:
-  res: play
-  app: oncube-app
+# - res/cron.yml
+- res/cert-job.yml
+# commonLabels:
+#   res: play
+#   app: oncube-app
+labels:
+- pairs:
+    res: play
+    app: oncube-app
 configMapGenerator:
 - name: app-data
   files:
@@ -24,3 +31,18 @@ images:
   newTag: 1.21.6
 - name: docker.io/nginx/unit
   newTag: 1.26.1-node16
+patchesJson6902:
+- target:
+    version: v1
+    kind: Ingress
+    name: oncube-certs
+  patch: |-
+    - op: copy
+      from: /spec/rules/0
+      path: /spec/rules/1
+    - op: add
+      path: /spec/rules/0/host
+      value: k88s.piesz.pl
+    - op: add
+      path: /spec/rules/1/host
+      value: k88s.piesz.app

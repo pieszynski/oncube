@@ -4,7 +4,13 @@ metadata:
   name: oncube
 spec:
   replicas: 3
+  selector:
+    matchLabels:
+      app: oncube-app
   template:
+    metadata:
+      labels:
+        app: oncube-app
     spec:
       containers:
       - name: oncube

@@ -1,6 +1,10 @@
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=pieszynski_oncube&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=pieszynski_oncube)
 
+
+## Azure
+Należy włączyć dostawcę `Microsoft.Storage` np przez portal w `Subscriptions --> Resource providers --> Microsoft.Storage --> Register`, bo inaczej korzystanie z `` czy `` będzie rzucało błędem `failed to provision volume with StorageClass (...) The subscription is not registered to use namespace 'Microsoft.Storage'. See https://aka.ms/rps-not-found for how to register subscriptions`
+
 ## Build 
 
 ```bash
@@ -30,9 +34,6 @@ kubectl apply -k live/
 ```bash
 kubectl get all
 
-kubectl apply -f config/ns.yml
-kubectl apply -f config/deployment.yml
-
 kubectl logs -l app=oncube -f --timestamps --prefix
 
 kubectl edit deployment/oncube
@@ -57,3 +58,7 @@ curl http://localhost:8001/api/v1/namespaces/test/pods/nginx-deployment-7c6796f5
 curl http://localhost:8001/api/v1/namespaces/test/pods/nginx-deployment-7c6796f5c-w6qp8/proxy/
 
 ```
+
+### Inne
+
+Zawartość pliku CER/PEM: openssl x509 -noout -text -in cert.cer

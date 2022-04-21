@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: oncube
 spec:
+  selector:
+    app: oncube-app
   type: ClusterIP
   ports:
   - port: 90
