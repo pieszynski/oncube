@@ -2,15 +2,16 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /rewrite/$2
+    nginx.ingress.kubernetes.io/rewrite-target: /rewrite/$1
     nginx.ingress.kubernetes.io/use-regex: "true"
   name: oncube
 spec:
   ingressClassName: nginx
   rules:
-  - http:
+  - host: null.piesz.pl
+    http:
       paths:
-      - path: /s(/|$)(.*)
+      - path: /(.*)
         pathType: Prefix
         backend:
           service:

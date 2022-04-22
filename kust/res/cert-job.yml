@@ -32,40 +32,84 @@ spec:
               number: 91
 ---
 apiVersion: batch/v1
-kind: Job
+kind: CronJob
 metadata:
-  name: oncube-certs-job
+  name: oncube-certs
 spec:
-  template:
-    metadata:
-      labels:
-        app: oncube-certs
+  schedule: "* 1 1 JAN *"
+  suspend: true
+  jobTemplate:
     spec:
-      containers:
-      - name: certbot
-        image: docker.io/certbot/certbot:latest
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 80
-        args:
-        - certonly
-        - --standalone
-        - -d
-        - k88s.piesz.pl,k88s.piesz.app
-        - -m
-        - ssl@fajnie.eu
-        - -n
-        - --agree-tos
-        # - --test-cert
-        # - --dry-run
-        # - -v
-        volumeMounts:
-        - mountPath: "/etc/letsencrypt"
-          name: volume
-      volumes:
-      - name: volume
-        persistentVolumeClaim:
-          claimName: oncube-certs-pvc
+      ttlSecondsAfterFinished: 4320
+      backoffLimit: 0
+      template:
+        metadata:
+          labels:
+            app: oncube-certs
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: certbot
+            image: docker.io/certbot/certbot:latest
+            imagePullPolicy: IfNotPresent
+            ports:
+            - containerPort: 80
+            args:
+            - certonly
+            - --standalone
+            - -d
+            - aks-ing.piesz.pl,aks-ing.piesz.app
+            - -m
+            - ssl@fajnie.eu
+            - -n
+            - --agree-tos
+            # - --test-cert
+            # - --dry-run
+            # - -v
+            volumeMounts:
+            - mountPath: "/etc/letsencrypt"
+              name: volume
+          volumes:
+          - name: volume
+            persistentVolumeClaim:
+              claimName: oncube-certs-pvc
 
-      restartPolicy: Never
-  backoffLimit: 0
+# ---
+# apiVersion: batch/v1
+# kind: Job
+# metadata:
+#   name: oncube-certs-job
+# spec:
+#   template:
+#     metadata:
+#       labels:
+#         app: oncube-certs
+#     spec:
+#       containers:
+#       - name: certbot
+#         image: docker.io/certbot/certbot:latest
+#         imagePullPolicy: IfNotPresent
+#         ports:
+#         - containerPort: 80
+#         args:
+#         - certonly
+#         - --standalone
+#         - -d
+#         - k88s.piesz.pl,k88s.piesz.app
+#         - -m
+#         - ssl@fajnie.eu
+#         - -n
+#         - --agree-tos
+#         # - --test-cert
+#         # - --dry-run
+#         # - -v
+#         volumeMounts:
+#         - mountPath: "/etc/letsencrypt"
+#           name: volume
+#       volumes:
+#       - name: volume
+#         persistentVolumeClaim:
+#           claimName: oncube-certs-pvc
+
+#       restartPolicy: Never
+#   backoffLimit: 0

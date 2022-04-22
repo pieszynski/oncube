@@ -7,11 +7,7 @@ resources:
 - res/depl.yml
 - res/svc.yml
 - res/ingr.yml
-# - res/cron.yml
 - res/cert-job.yml
-# commonLabels:
-#   res: play
-#   app: oncube-app
 labels:
 - pairs:
     res: play
@@ -35,6 +31,14 @@ patchesJson6902:
 - target:
     version: v1
     kind: Ingress
+    name: oncube
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: aks-ing.piesz.pl
+- target:
+    version: v1
+    kind: Ingress
     name: oncube-certs
   patch: |-
     - op: copy
@@ -42,7 +46,7 @@ patchesJson6902:
       path: /spec/rules/1
     - op: add
       path: /spec/rules/0/host
-      value: k88s.piesz.pl
+      value: 'aks-ing.piesz.pl'
     - op: add
       path: /spec/rules/1/host
-      value: k88s.piesz.app
+      value: 'aks-ing.piesz.app'
