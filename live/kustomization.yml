@@ -16,18 +16,43 @@ patchesJson6902:
       value: LIVE
 - target:
     version: v1
+    kind: ClusterIssuer
+    name: oncube
+  patch: |-
+    - op: replace
+      path: /spec/acme/privateKeySecretRef/name
+      value: oncube-ssl-live
+- target:
+    version: v1
     kind: Ingress
     name: oncube
   patch: |-
+    - op: replace
+      path: /spec/tls/0/secretName
+      value: oncube-ssl-live
+    - op: remove
+      path: /spec/tls/0/hosts
     - op: add
+      path: /spec/tls/0/hosts
+      value: []
+    - op: add
+      path: /spec/tls/0/hosts/0
+      value: aks.piesz.pl
+    - op: add
+      path: /spec/tls/0/hosts/1
+      value: aks.piesz.app
+    # - op: copy
+    #   from: /spec/rules/0
+    #   path: /spec/rules/1
+    - op: replace
       path: /spec/rules/0/host
       value: aks.piesz.pl
     - op: replace
+      path: /spec/rules/1/host
+      value: aks.piesz.app
+    - op: replace
       path: /metadata/annotations/nginx.ingress.kubernetes.io~1rewrite-target
       value: /hello/$1
-    - op: replace
-      path: /spec/rules/0/http/paths/0/path
-      value: /(.*)
 replicas:
 - name: oncube
   count: 2
