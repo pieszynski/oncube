@@ -1,12 +1,17 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
+  name: oncube
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /rewrite/$1
     nginx.ingress.kubernetes.io/use-regex: "true"
-  name: oncube
+    cert-manager.io/cluster-issuer: oncube
 spec:
   ingressClassName: nginx
+  tls:
+  - secretName: oncube-ssl
+    hosts:
+    - null.piesz.pl
   rules:
   - host: null.piesz.pl
     http:
@@ -18,4 +23,3 @@ spec:
             name: oncube
             port: 
               number: 90
-    # host: rewrite.bar.com

@@ -3,11 +3,12 @@ kind: Kustomization
 namespace: ing
 resources:
 - res/ns.yml
-- res/store.yml
+# - res/store.yml
 - res/depl.yml
 - res/svc.yml
 - res/ingr.yml
-- res/cert-job.yml
+- res/certs.yml
+# - res/cert-job.yml
 labels:
 - pairs:
     res: play
@@ -34,19 +35,31 @@ patchesJson6902:
     name: oncube
   patch: |-
     - op: replace
-      path: /spec/rules/0/host
+      path: /spec/tls/0/hosts/0
       value: aks-ing.piesz.pl
-- target:
-    version: v1
-    kind: Ingress
-    name: oncube-certs
-  patch: |-
+    - op: add
+      path: /spec/tls/0/hosts/1
+      value: aks-ing.piesz.app
     - op: copy
       from: /spec/rules/0
       path: /spec/rules/1
-    - op: add
+    - op: replace
       path: /spec/rules/0/host
-      value: 'aks-ing.piesz.pl'
-    - op: add
+      value: aks-ing.piesz.pl
+    - op: replace
       path: /spec/rules/1/host
-      value: 'aks-ing.piesz.app'
+      value: aks-ing.piesz.app
+# - target:
+#     version: v1
+#     kind: Ingress
+#     name: oncube-certs
+#   patch: |-
+#     - op: copy
+#       from: /spec/rules/0
+#       path: /spec/rules/1
+#     - op: add
+#       path: /spec/rules/0/host
+#       value: 'aks-ing.piesz.pl'
+#     - op: add
+#       path: /spec/rules/1/host
+#       value: 'aks-ing.piesz.app'
